@@ -1492,29 +1492,30 @@
               <li role="presentation"><a href="#sing-in" aria-controls="sing-in" role="tab"
                   data-toggle="tab">&nbsp;&nbsp;Sing-In&nbsp;&nbsp;</a></li>
             </ul>
+
             <!-- Tab panes -->
             <div class="tab-content mt-3">
               <!-- Contact Us -->
               <div role="tabpanel" class="tab-pane active" id="contact-us">
-                <form method="post" data-aos="fade">
-                  <div class="form-group row">
+                <form method="post" action="http://localhost:3000/api/contact" data-aos="fade">
+                  <div id="contact-form" class="form-group row">
                     <div class="col-md-6 mb-3 mb-lg-0">
-                      <input type="text" class="form-control" placeholder="First name">
+                      <input type="text" id="fname" class="form-control" placeholder="First name">
                     </div>
                     <div class="col-md-6">
-                      <input type="text" class="form-control" placeholder="Last name">
+                      <input type="text" id="lname" class="form-control" placeholder="Last name">
                     </div>
                   </div>
 
                   <div class="form-group row">
                     <div class="col-md-12">
-                      <input type="email" class="form-control" placeholder="Email">
+                      <input type="email" id="email" class="form-control" placeholder="Email">
                     </div>
                   </div>
 
                   <div class="form-group row">
                     <div class="col-md-12">
-                      <select id="subject-list" class="form-control">
+                      <select id="subject-list" name="subject" class="form-control">
                         <option value="">Subject</option>
                       </select>
                     </div>
@@ -1522,7 +1523,7 @@
 
                   <div class="form-group row">
                     <div class="col-md-12">
-                      <textarea class="form-control" id="" cols="30" rows="10"
+                      <textarea class="form-control" id="message" name="message" cols="30" rows="10"
                         placeholder="Write your message here."></textarea>
                     </div>
                   </div>
@@ -1770,7 +1771,18 @@
         const contact = document.getElementById("content-head");
         contact.innerHTML = "WooooW";
 
+        loadDoc("./xml/class_sunday.xml", classXML);
+        loadDoc("./json/class_sunday.json", classJSON);
+
+        // loadSubject("http://localhost:5000");
+        // loadSubject("./json/contact_subject.json");
+        loadSubject("htpp:localhost:3000/api/subject");
       };
+
+      function contactSubmit(){
+        document.getElementById('contact-form').submit();
+      }
+
     </script>
 
 </body>
