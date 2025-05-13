@@ -1,10 +1,12 @@
 const express = require('express');
-const router = express.Router();
+const Router = express.Router();
 
-const subject = '{"contactSubject": ["Software Developer","System Administrator","Data Analyst","Cybersecurity Specialist","Cloud Engineer","UX/UI Designer","Other"]}'
+//const subject = '{"contactSubject": ["General Enquery","Classes","Schedules","Instructor","Prices","Other","Nattharin","Pin"]}';
+const subject = require('../data/contact_subject.json');
 
-router.get('/', (req,res)=> {
-  res.end(subject);
-})
+Router.get('/', (req, res) => {
+  //res.end(subject); // string (text)
+  res.json(subject); // file
+});
 
-module.exports = router
+module.exports = Router;

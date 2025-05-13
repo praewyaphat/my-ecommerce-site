@@ -7,5 +7,5 @@ router.post('/',(req,res) => {
     res.status(200).json({status : 'Message Received'});
 });
 
-module.exports = router
+module.exports = router;
 

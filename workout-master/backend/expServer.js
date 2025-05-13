@@ -9,9 +9,9 @@ app.use(cors());
 
 app.use(bodyParser.json());
 
-app.use('/api/subject', require('./routes/subject.js'));
-app.use('/api/contact', require('./routes/contact.js'));
-
+app.use('/api/subject', require('./routes/subject'));
+app.use('/api/contact', require('./routes/contact'));
+app.use('/api/subscribe', require('./routes/subscribe'));
 
 app.listen(PORT, () => {
     console.log("Server is running at http://localhost:"+PORT);
