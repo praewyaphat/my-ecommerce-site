@@ -1945,7 +1945,7 @@
         console.log(loginData);
 
         if (!loginData.username || !loginData.password) {
-          return alert("กรุณากรอกอีเมลและรหัสผ่าน");
+          return alert("Please enter your email and password");
         }
         try {
           const response = await fetch('http://localhost:3000/api/login', {
@@ -1958,7 +1958,7 @@
           alert(result);
         } catch (error) {
           console.error(error);
-          alert("เกิดข้อผิดพลาดขณะเข้าสู่ระบบ");
+          alert("An error occurred while logging in");
         }
       }
 

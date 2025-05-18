@@ -11,7 +11,7 @@ router.post('/',(req,res) => {
     const filePath = path.join(__dirname,'..','data','user.json');
 
      if (!fs.existsSync(filePath)) {
-    return res.send("ยังไม่มีข้อมูลผู้ใช้");
+    return res.send("์No user information yet");
   }
 
   const users = JSON.parse(fs.readFileSync(filePath, 'utf-8'));
