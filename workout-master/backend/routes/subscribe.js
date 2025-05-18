@@ -22,7 +22,7 @@ router.post('/',(req,res) => {
         console.log('Content from submited', {email});
     }else{
         //no file
-        subscribes.push(subscribe)
+        subscribes.push(subscribe);
         fs.writeFileSync(filePath, JSON.stringify(subscribes, null, 2));
         res.status(200).json({status : "Message Received"});
         console.log('Content from submited', {email});

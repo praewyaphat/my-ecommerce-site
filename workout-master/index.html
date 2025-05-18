@@ -1544,29 +1544,45 @@
                 <form method="post" data-aos="fade">
                   <div class="form-group row">
                     <div class="col-md-6 mb-3 mb-lg-0">
-                      <input type="text" class="form-control" placeholder="First name">
+                      <input type="text" id="reg-fname" class="form-control" placeholder="First name">
                     </div>
                     <div class="col-md-6">
-                      <input type="text" class="form-control" placeholder="Last name">
+                      <input type="text" id="reg-lname" class="form-control" placeholder="Last name">
                     </div>
                   </div>
 
                   <div class="form-group row">
                     <div class="col-md-12">
-                      <input type="email" class="form-control" placeholder="Email">
+                      <select id="occupationCategory" class="form-control">
+                        <option value="">Occupation Category</option>
+                      </select>
                     </div>
                   </div>
 
                   <div class="form-group row">
                     <div class="col-md-12">
-                      <input type="password" class="form-control" placeholder="Password">
+                      <select id="occupation" class="form-control">
+                        <option value="">Occupation</option>
+                      </select>
+                    </div>
+                  </div>
+
+                  <div class="form-group row">
+                    <div class="col-md-12">
+                      <input type="email" id="reg-email" class="form-control" placeholder="Email">
+                    </div>
+                  </div>
+
+                  <div class="form-group row">
+                    <div class="col-md-12">
+                      <input type="password" id="reg-password" class="form-control" placeholder="Password">
                     </div>
                   </div>
 
                   <div class="form-group row">
                     <div class="col-md-6">
-
-                      <input type="submit" class="btn btn-primary py-3 px-5 btn-block" value="Send Message">
+                      <input type="button" onclick="registerSubmit()" class="btn btn-primary py-3 px-5 btn-block"
+                        value="REGISTER">
                     </div>
                   </div>
                 </form>
@@ -1577,20 +1593,21 @@
                 <form method="post" data-aos="fade">
                   <div class="form-group row">
                     <div class="col-md-12">
-                      <input type="email" class="form-control" placeholder="Email">
+                      <input type="text" id="login-username" class="form-control" placeholder="Username">
                     </div>
                   </div>
 
                   <div class="form-group row">
                     <div class="col-md-12">
-                      <input type="password" class="form-control" placeholder="Password">
+                      <input type="password" id="login-password" class="form-control" placeholder="Password">
                     </div>
                   </div>
 
                   <div class="form-group row">
                     <div class="col-md-6">
 
-                      <input type="submit" class="btn btn-primary py-3 px-5 btn-block" value="Send Message">
+                      <input type="button" onclick="loginSubmit()" class="btn btn-primary py-3 px-5 btn-block"
+                        value="LOGIN">
                     </div>
                   </div>
                 </form>
@@ -1773,25 +1790,24 @@
         });
       }
 
-      window.onload = function () {
+      // window.onload = function () {
 
-        const contact = document.getElementById("contact-head");
-        contact.innerHTML = "WooooW";
+      //   const contact = document.getElementById("contact-head");
+      //   contact.innerHTML = "WooooW";
 
-        loadDoc("./xml/class_sunday.xml", classXML);
-        loadDoc("./json/class_sunday.json", classJSON);
+      //   loadDoc("./xml/class_sunday.xml", classXML);
+      //   loadDoc("./json/class_sunday.json", classJSON);
 
-        // loadSubject("http://localhost:5000");
-        //loadSubject("./json/contact_subject.json");
-        loadSubject('http://localhost:3000/api/subject');
+      //   // loadSubject("http://localhost:5000");
+      //   //loadSubject("./json/contact_subject.json");
+      //   loadSubject('http://localhost:3000/api/subject');
 
-        //document.getElementById('subscribe-form')
-        //  .addEventListener('submit', event => subscribeSubmit(event));
-
-
-      };
+      //   //document.getElementById('subscribe-form')
+      //   //  .addEventListener('submit', event => subscribeSubmit(event));
+      // };
 
       //AJAX Function
+
       const ajax = async (config) => {
         const request = await fetch(config.url, {
           method: config.method,
@@ -1815,9 +1831,10 @@
           subject: document.getElementById("subject-list").value,
           message: document.getElementById("message").value
         }
+
         console.log(data);
         let config = {
-          url: 'http://localhost:3000/api/contact',
+          url: 'http://localhost:3000/api/register',
           method: "POST",
           data: data
         }
@@ -1827,12 +1844,12 @@
 
       async function subscribeSubmit() {
         //e.preventDefault();
-      
+
         console.log('Hi');
         const email = { email: document.getElementById('subscribe-email').value };
         console.log(email);
         //return false;
-        
+
         const response = await fetch('http://localhost:3000/api/subscribe', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
@@ -1840,6 +1857,129 @@
         });
         console.log(response);
       }
+
+      //ดึงjson จากapi
+      async function fetchJSON(url) {
+        const response = await fetch(url);
+        if (!response.ok) throw new Error(`Failed to load ${url}`);
+        return await response.json();
+      }
+
+
+      function occupationCat(categories) {
+        const select = document.getElementById("occupationCategory");
+        select.innerHTML = '<option value="">Occupation Category</option>';
+        categories.forEach(category => {
+          const option = document.createElement("option");
+          option.value = category;
+          option.textContent = category;
+          select.appendChild(option);
+        });
+      }
+
+      function occupation(occupations) {
+        const select = document.getElementById("occupation");
+        select.innerHTML = '<option value="">Occupation</option>';
+        occupations.forEach(occupation => {
+          const option = document.createElement("option");
+          option.value = occupation;
+          option.textContent = occupation;
+          select.appendChild(option);
+        });
+      }
+
+      async function loadCategories() {
+        try {
+          const data = await fetchJSON('./json/occupation-cat.json');
+          occupationCat(data.categories);
+        } catch (error) {
+          console.error(error);
+        }
+      }
+
+      async function loadOccupations(category) {
+        try {
+          const data = await fetchJSON(`./json/${category}.json`);
+          occupation(data.occupations);
+        } catch (error) {
+          console.error(error);
+        }
+      }
+
+      async function registerSubmit() {
+        const user = {
+          firstName: document.getElementById("reg-fname").value,
+          lastName: document.getElementById("reg-lname").value,
+          occupationCategory: document.getElementById("occupationCategory").value,
+          occupation: document.getElementById("occupation").value,
+          email: document.getElementById("reg-email").value,
+          password: document.getElementById("reg-password").value
+        };
+        console.log(user);
+
+        const config = {
+          url: 'http://localhost:3000/api/register',
+          method: "POST",
+          data: user
+
+        }
+
+        if (!user.firstName.trim() || !user.lastName.trim() || !user.email.trim() || !user.password.trim() || user.occupationCategory === "" || user.occupation === "") {
+          return alert("Please fill in a fileds");
+        }
+        try {
+          const response = await ajax(config);
+          console.log(response);
+          alert(response.message || "Register successfully.");
+        } catch (error) {
+          console.error(error);
+          alert("Error registering user");
+        }
+      }
+
+      async function loginSubmit() {
+        const loginData = {
+          username: document.getElementById("login-username").value.trim(),
+          password: document.getElementById("login-password").value.trim()
+        }
+        console.log(loginData);
+
+        if (!loginData.username || !loginData.password) {
+          return alert("กรุณากรอกอีเมลและรหัสผ่าน");
+        }
+        try {
+          const response = await fetch('http://localhost:3000/api/login', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(loginData)
+          });
+
+          const result = await response.text();
+          alert(result);
+        } catch (error) {
+          console.error(error);
+          alert("เกิดข้อผิดพลาดขณะเข้าสู่ระบบ");
+        }
+      }
+
+
+      window.onload = function () {
+        const contact = document.getElementById("contact-head");
+        contact.innerHTML = "WooooW";
+
+        loadDoc("./xml/class_sunday.xml", classXML);
+        loadDoc("./json/class_sunday.json", classJSON);
+        loadSubject('http://localhost:3000/api/subject');
+        loadCategories();
+
+        document.getElementById("occupationCategory").addEventListener('change', function () {
+          document.getElementById("occupation").innerHTML = '<option value="">Occupation</option>';
+          const category = this.value.toLowerCase();
+          if (category) loadOccupations(category);
+        });
+      }
+
+
     </script>
 
 </body>
